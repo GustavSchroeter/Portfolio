@@ -64,8 +64,8 @@
   <p>Portfolio mit Bildern und Renderings meiner Projekte.</p>
 
   <div class="tabs">
-    <button class="tab-button active" onclick="showTab('bilder')">Bilder</button>
-    <button class="tab-button" onclick="showTab('renderings')">Renderings</button>
+    <button class="tab-button active" onclick="showTab(event, 'bilder')">Bilder</button>
+    <button class="tab-button" onclick="showTab(event, 'renderings')">Renderings</button>
   </div>
 
   <div id="bilder" class="tab-content active">
@@ -264,7 +264,8 @@
   </div>
 
   <script>
-    function showTab(tabId) {
+    function showTab(event, tabId) {
+      event.stopPropagation();
       // Hide all tab contents
       const contents = document.querySelectorAll('.tab-content');
       contents.forEach(content => content.classList.remove('active'));
