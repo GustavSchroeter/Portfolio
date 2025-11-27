@@ -293,58 +293,58 @@
 
     // Lightbox functionality
     document.addEventListener('DOMContentLoaded', function() {
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
       const galleryItems = document.querySelectorAll('.gallery-item');
       const modal = document.getElementById('lightbox-modal');
       const lightboxImg = document.getElementById('lightbox-img');
       const lightboxVideo = document.getElementById('lightbox-video');
 
-      let isScrolling = false;
-      let scrollTimer;
+      function openLightbox(item) {
+        const img = item.querySelector('img');
+        const video = item.querySelector('video');
 
-      // Detect scrolling on mobile devices
-      document.addEventListener('touchmove', function() {
-        isScrolling = true;
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(() => {
-          isScrolling = false;
-        }, 150); // Delay to allow for proper tap detection
-      });
-
-      document.addEventListener('touchend', function() {
-        clearTimeout(scrollTimer);
-        if (!isScrolling) {
-          // Allow tap after a brief delay to ensure it wasn't during scroll
+        if (img) {
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt;
+          lightboxImg.style.display = 'block';
+          lightboxVideo.style.display = 'none';
+          lightboxVideo.pause();
+          lightboxVideo.src = '';
+        } else if (video) {
+          lightboxVideo.src = video.src;
+          lightboxVideo.style.display = 'block';
+          lightboxImg.style.display = 'none';
+          lightboxImg.src = '';
         }
-      });
+
+        modal.style.display = 'flex';
+      }
 
       galleryItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-          // Prevent accidental clicks while scrolling on mobile
-          if (isScrolling) {
-            e.preventDefault();
-            e.stopPropagation();
-            return;
-          }
+        if (isTouchDevice) {
+          let touchstartX = 0;
+          let touchstartY = 0;
 
-          const img = item.querySelector('img');
-          const video = item.querySelector('video');
+          item.addEventListener('touchstart', function(event) {
+            touchstartX = event.changedTouches[0].screenX;
+            touchstartY = event.changedTouches[0].screenY;
+          }, false);
 
-          if (img) {
-            lightboxImg.src = img.src;
-            lightboxImg.alt = img.alt;
-            lightboxImg.style.display = 'block';
-            lightboxVideo.style.display = 'none';
-            lightboxVideo.pause(); // Pause any playing video
-            lightboxVideo.src = '';
-          } else if (video) {
-            lightboxVideo.src = video.src;
-            lightboxVideo.style.display = 'block';
-            lightboxImg.style.display = 'none';
-            lightboxImg.src = '';
-          }
+          item.addEventListener('touchend', function(event) {
+            const touchendX = event.changedTouches[0].screenX;
+            const touchendY = event.changedTouches[0].screenY;
+            const deltaX = Math.abs(touchendX - touchstartX);
+            const deltaY = Math.abs(touchendY - touchstartY);
 
-          modal.style.display = 'flex';
-        });
+            if (deltaX < 10 && deltaY < 10) {
+              openLightbox(item);
+            }
+          }, false);
+        } else {
+          item.addEventListener('click', function() {
+            openLightbox(item);
+          });
+        }
 
         // Prevent context menu on long press (mobile)
         item.addEventListener('contextmenu', function(e) {
