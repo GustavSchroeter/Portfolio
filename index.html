@@ -27,6 +27,35 @@
       body { padding: 20px; }
       .gallery { grid-template-columns: 1fr 1fr; gap: 10px; }
     }
+    /* Lightbox Modal Styles */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease-in;
+    }
+    .lightbox-content {
+      position: relative;
+      text-align: center;
+    }
+    #lightbox-img, #lightbox-video {
+      max-width: 80vw;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 24px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -225,6 +254,14 @@
   <h2>Kontakt</h2>
   <p>E-Mail: gustav.schroeter@directbox.com</p>
 
+  <!-- Modal für Bilder und Videos -->
+  <div id="lightbox-modal" class="lightbox-modal">
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="" style="display: none;">
+      <video id="lightbox-video" src="" autoplay muted loop controls style="display: none; max-width: 90vw; max-height: 90vh;"></video>
+    </div>
+  </div>
+
   <script>
     function showTab(tabId) {
       // Hide all tab contents
@@ -252,6 +289,58 @@
       const body = encodeURIComponent('Name: '+name+'\nE‑Mail: '+email+'\n\n'+msg);
       window.location.href = `mailto:gustav@example.com?subject=${subject}&body=${body}`;
     }
+
+    // Lightbox functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      const modal = document.getElementById('lightbox-modal');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxVideo = document.getElementById('lightbox-video');
+
+      galleryItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const img = item.querySelector('img');
+          const video = item.querySelector('video');
+
+          if (img) {
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+            lightboxImg.style.display = 'block';
+            lightboxVideo.style.display = 'none';
+            lightboxVideo.pause(); // Pause any playing video
+            lightboxVideo.src = '';
+          } else if (video) {
+            lightboxVideo.src = video.src;
+            lightboxVideo.style.display = 'block';
+            lightboxImg.style.display = 'none';
+            lightboxImg.src = '';
+          }
+
+          modal.style.display = 'flex';
+        });
+      });
+
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+          closeModal();
+        }
+      });
+
+      function closeModal() {
+        modal.style.display = 'none';
+        lightboxImg.src = '';
+        lightboxImg.style.display = 'none';
+        lightboxVideo.pause();
+        lightboxVideo.src = '';
+        lightboxVideo.style.display = 'none';
+      }
+    });
 
     (function(){
       const footer = document.querySelector('footer div');
