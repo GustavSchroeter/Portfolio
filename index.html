@@ -323,23 +323,32 @@
 
       galleryItems.forEach(item => {
         if (isTouchDevice) {
+          let longPressTimer;
           let touchstartX = 0;
           let touchstartY = 0;
 
           item.addEventListener('touchstart', function(event) {
             touchstartX = event.changedTouches[0].screenX;
             touchstartY = event.changedTouches[0].screenY;
+            
+            longPressTimer = setTimeout(() => {
+              openLightbox(item);
+            }, 500); // 500ms for long press
           }, false);
 
-          item.addEventListener('touchend', function(event) {
+          item.addEventListener('touchmove', function(event) {
             const touchendX = event.changedTouches[0].screenX;
             const touchendY = event.changedTouches[0].screenY;
             const deltaX = Math.abs(touchendX - touchstartX);
             const deltaY = Math.abs(touchendY - touchstartY);
 
-            if (deltaX < 10 && deltaY < 10) {
-              openLightbox(item);
+            if (deltaX > 10 || deltaY > 10) { // If moved, cancel the long press
+              clearTimeout(longPressTimer);
             }
+          }, false);
+
+          item.addEventListener('touchend', function(event) {
+            clearTimeout(longPressTimer);
           }, false);
         } else {
           item.addEventListener('click', function() {
