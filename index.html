@@ -123,9 +123,15 @@
       window.location.href = `mailto:gustav@example.com?subject=${subject}&body=${body}`;
     }
 
-    // Content Management: Galerien werden aus data/*.json geladen und gerendert,
-    // damit neue Bilder/Videos durch Editieren der JSON-Dateien hinzugefügt werden
-    // können, statt HTML-Blöcke von Hand zu schreiben.
+    // Content Management:
+    // - Bilder: data/bilder.txt listet einen Dateinamen pro Zeile aus assets/images/bilder/.
+    //   Der Dateiname (ohne Endung, ohne "(2)"-Zähler bei Duplikaten) wird zum Text unter dem Bild.
+    //   Neues Bild hinzufügen = Datei in assets/images/bilder/ ablegen und den Dateinamen hier eintragen.
+    // - Renderings: data/renderings.json, da dort zusätzlich die Software-Angabe gepflegt wird.
+    function captionFromFilename(filename) {
+      return filename.replace(/\.[^./]+$/, '').replace(/\s*\(\d+\)$/, '');
+    }
+
     function createGalleryItem(entry) {
       const item = document.createElement('div');
       item.className = 'gallery-item';
@@ -159,11 +165,27 @@
       entries.forEach(entry => container.appendChild(createGalleryItem(entry)));
     }
 
+    async function loadBilderGallery(url, folder, containerId) {
+      const container = document.getElementById(containerId);
+      const response = await fetch(url);
+      const text = await response.text();
+      const filenames = text.split('\n').map(line => line.trim()).filter(Boolean);
+      filenames.forEach(filename => {
+        const caption = captionFromFilename(filename);
+        container.appendChild(createGalleryItem({
+          type: 'image',
+          src: folder + filename,
+          alt: caption,
+          datum: caption
+        }));
+      });
+    }
+
     // Lightbox functionality
     document.addEventListener('DOMContentLoaded', async function() {
       try {
         await Promise.all([
-          loadGallery('data/bilder.json', 'bilder-gallery'),
+          loadBilderGallery('data/bilder.txt', 'assets/images/bilder/', 'bilder-gallery'),
           loadGallery('data/renderings.json', 'renderings-gallery')
         ]);
       } catch (err) {
