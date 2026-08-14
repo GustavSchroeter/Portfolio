@@ -5,7 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Portfolio Karl Gustav Schröter</title>
   <meta name="description" content="Portfolio von Karl Gustav Schröter — Bilder und Renderings" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"></noscript>
   <style>
     body { font-family: 'Inter', sans-serif; margin: 0; padding: 40px; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); color: #333; line-height: 1.6; }
     h1 { color: #2c3e50; font-weight: 600; }
@@ -146,6 +149,8 @@
         item.appendChild(video);
       } else {
         const img = document.createElement('img');
+        img.loading = 'lazy';
+        img.decoding = 'async';
         img.src = entry.src;
         img.alt = entry.alt || '';
         item.appendChild(img);
