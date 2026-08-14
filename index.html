@@ -16,8 +16,8 @@
     .tab-button:hover { background: #95a5a6; color: white; }
     .tab-content { display: none; margin-top: 20px; }
     .tab-content.active { display: block; }
-    .gallery { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 20px; justify-content: center; }
-    .gallery-item { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; position: relative; cursor: pointer; width: 300px; max-width: 100%; }
+    .gallery { column-count: 4; column-gap: 0; }
+    .gallery-item { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; position: relative; cursor: pointer; width: 100%; break-inside: avoid; }
     .gallery-item:hover { transform: scale(1.05); }
     .gallery-item img { display: block; width: 100%; height: auto; }
     .gallery-item video { display: block; width: 100%; height: auto; }
@@ -26,7 +26,10 @@
     footer { margin-top: 50px; text-align: center; color: #7f8c8d; }
     @media (max-width: 768px) {
       body { padding: 20px; }
-      .gallery { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .gallery { column-count: 2; }
+    }
+    @media (max-width: 480px) {
+      .gallery { column-count: 1; }
     }
     /* Lightbox Modal Styles */
     .lightbox-modal {
