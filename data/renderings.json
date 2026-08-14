@@ -1,0 +1,15 @@
+[
+  { "type": "video", "src": "assets/videos/Iphone_ad.mp4", "datum": "Oktober 2025", "software": "Blender, Premiere Pro" },
+  { "type": "video", "src": "assets/videos/Werbespot.mp4", "datum": "Oktober 2025", "software": "Blender, Premiere Pro" },
+  { "type": "video", "src": "assets/videos/portal-fertig.mp4", "datum": "Juli 2024", "software": "Blender, After Effects" },
+  { "type": "image", "src": "assets/images/renderings/Render-10.jpg", "alt": "Rendering 3", "datum": "Oktober 2023", "software": "Blender" },
+  { "type": "image", "src": "assets/images/renderings/Render-09.jpg", "alt": "Rendering 3", "datum": "Oktober 2023", "software": "Blender" },
+  { "type": "image", "src": "assets/images/renderings/Render-07.jpg", "alt": "Rendering 3", "datum": "Februar 2024", "software": "Blender" },
+  { "type": "image", "src": "assets/images/renderings/Render-06.jpg", "alt": "Rendering 3", "datum": "Februar 2024", "software": "Blender" },
+  { "type": "video", "src": "assets/videos/20220820_075537000_iOS.MOV", "datum": "August 2022", "software": "Blender" },
+  { "type": "video", "src": "assets/videos/5755F3B9-6BD0-4240-AF93-8EC755F5A1A4.MOV", "datum": "August 2022", "software": "Blender" },
+  { "type": "image", "src": "assets/images/renderings/Render-05.jpg", "alt": "Rendering 3", "datum": "August 2022", "software": "Blender" },
+  { "type": "image", "src": "assets/images/renderings/Render-04.jpg", "alt": "Rendering 3", "datum": "September 2023", "software": "Blender" },
+  { "type": "image", "src": "assets/images/renderings/Render-03.jpg", "alt": "Rendering 3", "datum": "September 2022", "software": "Blender" },
+  { "type": "image", "src": "assets/images/renderings/Render-02.jpg", "alt": "Rendering 3", "datum": "Juli 2024", "software": "Blender" }
+]
